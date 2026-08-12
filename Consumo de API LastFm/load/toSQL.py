@@ -40,10 +40,6 @@ engine = create_engine(f"mssql+pyodbc:///?odbc_connect={quoted}", echo=False)
 
 
 def ensure_bigint_columns():
-    """Tenta alterar colunas existentes para BIGINT (se necessário).
-
-    Ignora erros caso as tabelas/colunas não existam ainda.
-    """
     stmts = [
         "ALTER TABLE TopArtists ALTER COLUMN listeners BIGINT NULL",
         "ALTER TABLE TopArtists ALTER COLUMN playcount BIGINT NULL",
@@ -57,7 +53,6 @@ def ensure_bigint_columns():
             except Exception as e:
                 print(f"[LOAD] Falha ao executar: {s} -> {e}")
 
-    # imprimir tipos finais para confirmação
     try:
         ta = get_column_types('TopArtists')
         tb = get_column_types('TopAlbums')
@@ -77,7 +72,6 @@ def get_column_types(table_name: str):
     with engine.connect() as conn:
         res = conn.execute(q, {'t': table_name})
         for r in res:
-            # O driver pode retornar tuplas; usar índices para compatibilidade
             try:
                 col = r['COLUMN_NAME']
                 dtype = r['DATA_TYPE']
@@ -89,10 +83,7 @@ def get_column_types(table_name: str):
 
 
 def test_connection() -> bool:
-    """Tenta conectar ao banco e retorna True se ok, False caso contrário.
 
-    Use isto ao debugar cargas vazias para ver se a conexão falha.
-    """
     try:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
@@ -103,21 +94,12 @@ def test_connection() -> bool:
         return False
 
 def initialize_database():
-    """Inicializa o banco de dados (cria tabelas e altera colunas).
-    
-    Chamado apenas uma vez via Streamlit cache.
-    """
     Base.metadata.create_all(engine)
     ensure_bigint_columns()
     return True
 
 
 def recreate_tables(drop_first: bool = False):
-    """Recria as tabelas definidas em `Base`.
-
-    Quando `drop_first=True` executa `DROP TABLE` antes de criar.
-    Use com cuidado — é destrutivo.
-    """
     if drop_first:
         print('[LOAD] Dropando tabelas existentes (destrutivo)')
         Base.metadata.drop_all(engine)
@@ -133,7 +115,6 @@ if __name__ == "__main__":
 def insert(df_artists, df_all_albums):
     Session = sessionmaker(bind=engine)
 
-    # Verificações iniciais
     print(f"[LOAD] Iniciando insert(). Artists shape: {getattr(df_artists, 'shape', None)}, Albums shape: {getattr(df_all_albums, 'shape', None)}")
     if df_artists is None or df_artists.empty:
         print("[LOAD] df_artists está vazio — nada a inserir.")
