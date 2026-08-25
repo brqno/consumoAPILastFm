@@ -1,6 +1,9 @@
 # Consumo de API LastFm
 
 Projeto para extrair dados da API LastFm, armazenar em um banco SQL Server e visualizar via Streamlit.
+<img width="1920" height="1040" alt="LastFm Dashboard - Google Chrome 25_08_2026 09_07_14" src="https://github.com/user-attachments/assets/a30a2872-52c4-46e6-b85a-4593008aab99" />
+<img width="1920" height="1040" alt="LastFm Dashboard - Google Chrome 25_08_2026 09_08_17" src="https://github.com/user-attachments/assets/7489c44f-d2b7-458d-be9f-6f2886e4e054" />
+<img width="1920" height="1040" alt="LastFm Dashboard - Google Chrome 25_08_2026 09_09_40" src="https://github.com/user-attachments/assets/3687dfb6-3fc5-44be-b455-419eadb4a194" />
 
 ## Estrutura do projeto
 
