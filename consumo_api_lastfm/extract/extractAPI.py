@@ -7,8 +7,7 @@ import requests
 import pandas as pd
 
 URL = "https://ws.audioscrobbler.com/2.0"
-# Use environment variables when available; fallback to the provided key
-API_KEY = os.getenv("LASTFM_API_KEY", "e28d0854009731dced2a241da7ac2d9d")
+API_KEY = os.getenv("LASTFM_API_KEY", "api-key") ##insira aqui api key
 API_SECRET = os.getenv("LASTFM_API_SECRET", "")
 USER = os.getenv("LASTFM_USER", "brqnooT")
 
